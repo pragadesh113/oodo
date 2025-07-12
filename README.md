@@ -6,7 +6,7 @@ system. The goal is to promote sustainable
 fashion and reduce textile waste by encouraging users to reuse wearable garments instead of 
 discarding them. 
 
-Team Memember Details :
+Team Member Details :
 1.Team Leader Name : Pragadesh V
   College          : Thiagarajar College of Engineering , Madurai
   Email            : pragadesh@student.tce.edu
