@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReWear - Project Preview</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'rewear-primary': '#2D5A4B',
+                        'rewear-secondary': '#4A7C59',
+                        'rewear-accent': '#A8E6CF',
+                        'rewear-light': '#F0F8F5',
+                        'rewear-dark': '#1A3D2E',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 font-sans">
+    <div class="min-h-screen">
+        <!-- Header -->
+        <header class="bg-gradient-to-r from-rewear-primary to-rewear-secondary text-white shadow-lg">
+            <div class="container mx-auto px-4 py-6">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="text-3xl">👗</div>
+                        <h1 class="text-2xl font-bold">ReWear</h1>
+                    </div>
+                    <div class="text-sm">
+                        <span class="bg-white bg-opacity-20 px-3 py-1 rounded-full">Competition Demo</span>
+                    </div>
+                </div>
+                <p class="mt-2 text-rewear-accent">Sustainable Community Clothing Exchange Platform</p>
+            </div>
+        </header>
+
+        <!-- Project Overview -->
+        <section class="container mx-auto px-4 py-12">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">🌱 Project Overview</h2>
+                <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                    A full-stack web application promoting sustainable fashion through community-driven clothing exchange using React, Firebase, and modern web technologies.
+                </p>
+            </div>
+
+            <!-- Key Features Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                    <div class="text-3xl mb-4">🔐</div>
+                    <h3 class="text-xl font-semibold mb-2">User Authentication</h3>
+                    <p class="text-gray-600">Secure email/password registration and login with Firebase Auth</p>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                    <div class="text-3xl mb-4">👔</div>
+                    <h3 class="text-xl font-semibold mb-2">Item Management</h3>
+                    <p class="text-gray-600">Add, edit, and manage clothing listings with multiple image upload</p>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                    <div class="text-3xl mb-4">🔍</div>
+                    <h3 class="text-xl font-semibold mb-2">Smart Search</h3>
+                    <p class="text-gray-600">Advanced filtering by category, size, condition, and keywords</p>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                    <div class="text-3xl mb-4">🔄</div>
+                    <h3 class="text-xl font-semibold mb-2">Dual Exchange System</h3>
+                    <p class="text-gray-600">Direct item swaps or point-based redemption system</p>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                    <div class="text-3xl mb-4">⭐</div>
+                    <h3 class="text-xl font-semibold mb-2">Points Economy</h3>
+                    <p class="text-gray-600">Earn points for listings, spend on items you want</p>
+                </div>
+                
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+                    <div class="text-3xl mb-4">👑</div>
+                    <h3 class="text-xl font-semibold mb-2">Admin Panel</h3>
+                    <p class="text-gray-600">Content moderation and user management tools</p>
+                </div>
+            </div>
+
+            <!-- Technology Stack -->
+            <div class="bg-white rounded-lg shadow-md p-8 mb-16">
+                <h3 class="text-2xl font-bold text-center mb-8 text-gray-800">🛠 Technology Stack</h3>
+                <div class="grid md:grid-cols-3 gap-8">
+                    <div class="text-center">
+                        <div class="text-4xl mb-4">⚛️</div>
+                        <h4 class="font-semibold text-lg mb-2">Frontend</h4>
+                        <p class="text-gray-600">React 18, Tailwind CSS, Modern ES6+</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl mb-4">🔥</div>
+                        <h4 class="font-semibold text-lg mb-2">Backend</h4>
+                        <p class="text-gray-600">Firebase Auth, Firestore, Storage</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl mb-4">🚀</div>
+                        <h4 class="font-semibold text-lg mb-2">Deployment</h4>
+                        <p class="text-gray-600">Static hosting ready, Mobile responsive</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Demo Options -->
+            <div class="bg-gradient-to-r from-rewear-light to-white rounded-lg shadow-md p-8">
+                <h3 class="text-2xl font-bold text-center mb-8 text-gray-800">🎯 View Demo Options</h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <a href="DEMO_GUIDE.md" class="block bg-blue-600 text-white text-center py-4 px-6 rounded-lg hover:bg-blue-700 transition-colors">
+                        <div class="text-3xl mb-2">📖</div>
+                        <h4 class="font-semibold">Demo Guide</h4>
+                        <p class="text-sm mt-2">Complete setup & testing instructions</p>
+                    </a>
+                    
+                    <a href="test.html" class="block bg-green-600 text-white text-center py-4 px-6 rounded-lg hover:bg-green-700 transition-colors">
+                        <div class="text-3xl mb-2">🧪</div>
+                        <h4 class="font-semibold">Live Testing</h4>
+                        <p class="text-sm mt-2">Firebase connection & demo data</p>
+                    </a>
+                    
+                    <a href="PROJECT_STRUCTURE.md" class="block bg-purple-600 text-white text-center py-4 px-6 rounded-lg hover:bg-purple-700 transition-colors">
+                        <div class="text-3xl mb-2">🏗️</div>
+                        <h4 class="font-semibold">Code Review</h4>
+                        <p class="text-sm mt-2">Architecture & implementation details</p>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="mt-16 grid md:grid-cols-4 gap-6 text-center">
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="text-3xl font-bold text-rewear-primary">7</div>
+                    <p class="text-gray-600">React Components</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="text-3xl font-bold text-rewear-primary">3</div>
+                    <p class="text-gray-600">Firebase Services</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="text-3xl font-bold text-rewear-primary">100%</div>
+                    <p class="text-gray-600">Mobile Responsive</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <div class="text-3xl font-bold text-rewear-primary">♻️</div>
+                    <p class="text-gray-600">Sustainability Focus</p>
+                </div>
+            </div>
+
+            <!-- Team Info -->
+            <div class="mt-16 text-center bg-gray-100 rounded-lg p-8">
+                <h3 class="text-2xl font-bold mb-4 text-gray-800">👥 Development Team</h3>
+                <p class="text-lg text-gray-700 mb-2"><strong>Team Leader:</strong> Pragadesh V</p>
+                <p class="text-gray-600 mb-2"><strong>Team Members:</strong> Kamalrani M, Thirumalaiselvi T, Lakshana N</p>
+                <p class="text-gray-600"><strong>College:</strong> Thiagarajar College of Engineering, Madurai</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-rewear-dark text-white py-8">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-rewear-accent">Building a sustainable future through community-driven fashion exchange 👗🔄🌱</p>
+        </div>
+    </footer>
+</body>
+</html>

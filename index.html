@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReWear - Community Clothing Exchange</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👗</text></svg>">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- React and ReactDOM CDN -->
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js"></script>
+    <script crossorigin src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.development.js"></script>
+    
+    <!-- Babel for JSX -->
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.22.5/babel.min.js"></script>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+    
+    <!-- Custom Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'rewear-primary': '#2D5A4B',
+                        'rewear-secondary': '#4A7C59',
+                        'rewear-accent': '#A8E6CF',
+                        'rewear-light': '#F0F8F5',
+                        'rewear-dark': '#1A3D2E',
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #2D5A4B 0%, #4A7C59 100%);
+        }
+        
+        .card-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        .hover-lift {
+            transition: transform 0.2s ease-in-out;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-2px);
+        }
+        
+        .loading-spinner {
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #2D5A4B;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="font-sans bg-gray-50">
+    <div id="root"></div>
+    
+    <!-- Firebase Configuration -->
+    <script src="src/config/firebase.config.js"></script>
+    <script>
+        // Check if Firebase configuration is loaded
+        if (!window.firebaseConfig) {
+            console.error('Firebase configuration not found. Please copy firebase.config.template.js to firebase.config.js and update with your Firebase project details.');
+            alert('Firebase configuration missing. Please see setup instructions in README.md');
+        } else {
+            // Initialize Firebase
+            firebase.initializeApp(window.firebaseConfig);
+        }
+        
+        // Firebase services
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const storage = firebase.storage();
+        
+        // Global Firebase reference
+        window.firebaseServices = { auth, db, storage };
+    </script>
+    
+    <!-- Load Utilities and Services -->
+    <script src="src/utils/helpers.js"></script>
+    <script src="src/services/firebase.js"></script>
+    <script src="src/data/demo.js"></script>
+    
+    <!-- Load React Components -->
+    <script type="text/babel" src="src/components/LoginPage.js"></script>
+    <script type="text/babel" src="src/components/RegisterPage.js"></script>
+    <script type="text/babel" src="src/components/DashboardPage.js"></script>
+    <script type="text/babel" src="src/components/ItemListingPage.js"></script>
+    <script type="text/babel" src="src/components/ItemDetailPage.js"></script>
+    <script type="text/babel" src="src/components/AddItemPage.js"></script>
+    <script type="text/babel" src="src/components/AdminPanel.js"></script>
+    <script type="text/babel" src="src/App.js"></script>
+    
+    <!-- Render App -->
+    <script type="text/babel">
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Users collection - users can read/write their own profile
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      allow read: if request.auth != null; // Allow reading other users for swaps
+    }
+    
+    // Items collection - authenticated users can read all, write their own
+    match /items/{itemId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null && 
+                   request.auth.uid == resource.data.userId;
+      allow update, delete: if request.auth != null && 
+                            request.auth.uid == resource.data.userId;
+    }
+    
+    // Swaps collection - users involved in swap can read/write
+    match /swaps/{swapId} {
+      allow read, write: if request.auth != null && 
+                         (request.auth.uid == resource.data.requesterId || 
+                          request.auth.uid == resource.data.ownerId);
+      allow create: if request.auth != null;
+    }
+    
+    // Admin collection - only admins can access
+    match /admin/{document} {
+      allow read, write: if request.auth != null && 
+                         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
+    }
+    
+    // Categories collection - read-only for all authenticated users
+    match /categories/{categoryId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && 
+                   get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
+    }
+    
+    // Public data - read-only
+    match /public/{document} {
+      allow read: if true;
+      allow write: if request.auth != null && 
+                   get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
+    }
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "name": "rewear-community-exchange",
+  "version": "1.0.0",
+  "description": "A web-based platform for community clothing exchange with direct swaps and point-based redemption system",
+  "main": "index.html",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "dev": "live-server --port=8000 --open=/index.html",
+    "build": "echo 'No build process needed for CDN-based React app'",
+    "deploy": "firebase deploy"
+  },
+  "keywords": [
+    "clothing",
+    "exchange",
+    "sustainability",
+    "react",
+    "firebase",
+    "community",
+    "fashion",
+    "circular-economy"
+  ],
+  "author": "ReWear Team",
+  "license": "MIT",
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  },
+  "dependencies": {
+    "firebase": "^9.23.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rewear/community-exchange"
+  },
+  "homepage": "https://rewear-community.web.app",
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

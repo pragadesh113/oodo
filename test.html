@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReWear - Firebase Connection Test</title>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .status { padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .warning { background: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+        button { background: #007bff; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; margin: 5px; }
+        button:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <h1>🔥 ReWear Firebase Connection Test</h1>
+    
+    <div id="status">
+        <div class="status warning">
+            ⚠️ Please configure your Firebase project first in the script below
+        </div>
+    </div>
+
+    <div id="controls">
+        <button onclick="testConnection()">Test Firebase Connection</button>
+        <button onclick="testAuth()">Test Authentication</button>
+        <button onclick="testDatabase()">Test Firestore</button>
+        <button onclick="testStorage()">Test Storage</button>
+        <button onclick="loadDemoData()">Load Demo Data</button>
+    </div>
+
+    <div id="results"></div>
+
+    <script>
+        // ====== CONFIGURE YOUR FIREBASE PROJECT HERE ======
+        const firebaseConfig = {
+            apiKey: "your-api-key-here",
+            authDomain: "your-project-id.firebaseapp.com", 
+            projectId: "your-project-id",
+            storageBucket: "your-project-id.appspot.com",
+            messagingSenderId: "your-sender-id",
+            appId: "your-app-id"
+        };
+        // ================================================
+
+        let app, auth, db, storage;
+
+        function showStatus(message, type = 'warning') {
+            document.getElementById('status').innerHTML = 
+                `<div class="status ${type}">${message}</div>`;
+        }
+
+        function addResult(message) {
+            const results = document.getElementById('results');
+            results.innerHTML += `<div class="status success">${message}</div>`;
+        }
+
+        function addError(message) {
+            const results = document.getElementById('results');
+            results.innerHTML += `<div class="status error">${message}</div>`;
+        }
+
+        function testConnection() {
+            try {
+                if (firebaseConfig.apiKey === "your-api-key-here") {
+                    showStatus("❌ Please configure your Firebase project first!", 'error');
+                    return;
+                }
+
+                app = firebase.initializeApp(firebaseConfig);
+                auth = firebase.auth();
+                db = firebase.firestore();
+                storage = firebase.storage();
+
+                showStatus("✅ Firebase initialized successfully!", 'success');
+                addResult("🔥 Firebase app initialized");
+                addResult("🔐 Authentication service ready");
+                addResult("🗄️ Firestore database ready");
+                addResult("📦 Storage service ready");
+
+                // Make services globally available
+                window.firebaseServices = { auth, db, storage };
+
+            } catch (error) {
+                showStatus(`❌ Firebase initialization failed: ${error.message}`, 'error');
+                addError(`Error: ${error.message}`);
+            }
+        }
+
+        async function testAuth() {
+            if (!auth) {
+                addError("❌ Please test connection first");
+                return;
+            }
+
+            try {
+                // Test creating a temporary user
+                const email = 'test@rewear.com';
+                const password = 'testpassword123';
+                
+                addResult("🔐 Testing user creation...");
+                
+                // Check if user already exists, if so, sign in
+                try {
+                    await auth.signInWithEmailAndPassword(email, password);
+                    addResult("✅ Test user already exists - signed in successfully");
+                } catch (signInError) {
+                    if (signInError.code === 'auth/user-not-found') {
+                        const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                        addResult("✅ Test user created successfully");
+                        
+                        // Delete the test user
+                        await userCredential.user.delete();
+                        addResult("✅ Test user cleaned up");
+                    } else {
+                        throw signInError;
+                    }
+                }
+
+            } catch (error) {
+                addError(`❌ Authentication test failed: ${error.message}`);
+            }
+        }
+
+        async function testDatabase() {
+            if (!db) {
+                addError("❌ Please test connection first");
+                return;
+            }
+
+            try {
+                addResult("🗄️ Testing Firestore write...");
+                
+                // Test writing a document
+                const testDoc = await db.collection('test').add({
+                    message: 'Hello ReWear!',
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                addResult("✅ Test document created successfully");
+                
+                // Test reading the document
+                const docSnapshot = await testDoc.get();
+                if (docSnapshot.exists) {
+                    addResult("✅ Test document read successfully");
+                }
+                
+                // Clean up - delete test document
+                await testDoc.delete();
+                addResult("✅ Test document cleaned up");
+                
+            } catch (error) {
+                addError(`❌ Firestore test failed: ${error.message}`);
+            }
+        }
+
+        async function testStorage() {
+            if (!storage) {
+                addError("❌ Please test connection first");
+                return;
+            }
+
+            try {
+                addResult("📦 Testing Firebase Storage...");
+                
+                // Create a simple test file
+                const testContent = 'ReWear storage test';
+                const blob = new Blob([testContent], { type: 'text/plain' });
+                
+                // Upload test file
+                const storageRef = storage.ref().child('test/test-file.txt');
+                const uploadTask = await storageRef.put(blob);
+                
+                addResult("✅ Test file uploaded successfully");
+                
+                // Get download URL
+                const downloadURL = await uploadTask.ref.getDownloadURL();
+                addResult("✅ Download URL generated successfully");
+                
+                // Clean up - delete test file
+                await storageRef.delete();
+                addResult("✅ Test file cleaned up");
+                
+            } catch (error) {
+                addError(`❌ Storage test failed: ${error.message}`);
+            }
+        }
+
+        async function loadDemoData() {
+            if (!db) {
+                addError("❌ Please test connection first");
+                return;
+            }
+
+            try {
+                addResult("📝 Loading demo data...");
+                
+                // Create demo user
+                const demoUser = {
+                    username: 'DemoUser',
+                    email: 'demo@rewear.com',
+                    points: 25,
+                    joinDate: new Date(),
+                    isAdmin: false
+                };
+                
+                await db.collection('users').doc('demo-user').set(demoUser);
+                addResult("✅ Demo user created");
+                
+                // Create demo item
+                const demoItem = {
+                    title: 'Demo Vintage Jacket',
+                    description: 'A beautiful vintage denim jacket perfect for any season.',
+                    category: 'outerwear',
+                    type: 'jacket',
+                    size: 'M',
+                    condition: 'good',
+                    tags: ['vintage', 'denim', 'casual'],
+                    images: ['https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400'],
+                    points: 15,
+                    userId: 'demo-user',
+                    userName: 'DemoUser',
+                    status: 'available',
+                    createdAt: new Date(),
+                    updatedAt: new Date()
+                };
+                
+                await db.collection('items').doc('demo-item').set(demoItem);
+                addResult("✅ Demo item created");
+                
+                addResult("🎉 Demo data loaded successfully! You can now test the main application.");
+                
+            } catch (error) {
+                addError(`❌ Demo data loading failed: ${error.message}`);
+            }
+        }
+
+        // Initial message
+        document.addEventListener('DOMContentLoaded', function() {
+            showStatus("🚀 Ready to test Firebase connection. Configure your project and click 'Test Firebase Connection'");
+        });
+    </script>
+
+    <hr style="margin: 30px 0;">
+    
+    <h2>📋 Setup Instructions</h2>
+    <ol>
+        <li>Create a Firebase project at <a href="https://console.firebase.google.com/" target="_blank">Firebase Console</a></li>
+        <li>Enable Authentication (Email/Password), Firestore, and Storage</li>
+        <li>Get your Firebase config from Project Settings > General > Your apps</li>
+        <li>Replace the <code>firebaseConfig</code> object above with your actual config</li>
+        <li>Run the tests to verify everything works</li>
+        <li>Open <a href="index.html">index.html</a> to use the main application</li>
+    </ol>
+
+    <h2>🔗 Quick Links</h2>
+    <ul>
+        <li><a href="index.html">🏠 Main ReWear Application</a></li>
+        <li><a href="SETUP.md">📖 Detailed Setup Guide</a></li>
+        <li><a href="PROJECT_STRUCTURE.md">🏗️ Project Documentation</a></li>
+    </ul>
+</body>
+</html>

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 ReWear - Launch Center</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 40px;
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .logo {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 1rem;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #4a5568;
+            margin-bottom: 2rem;
+        }
+        
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 2rem 0;
+        }
+        
+        .card {
+            background: #f7fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 24px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-color: #667eea;
+        }
+        
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #2d3748;
+        }
+        
+        .card-desc {
+            color: #718096;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #f0fff4;
+            color: #22543d;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin: 1rem 0;
+        }
+        
+        .status.warning {
+            background: #fffbf0;
+            color: #744210;
+        }
+        
+        .features {
+            text-align: left;
+            margin: 2rem 0;
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+        }
+        
+        .features h3 {
+            margin-bottom: 1rem;
+            color: #2d3748;
+        }
+        
+        .features ul {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 8px;
+        }
+        
+        .features li {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #4a5568;
+        }
+        
+        .footer {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e2e8f0;
+            color: #718096;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 640px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">👗</div>
+        <h1>ReWear Launch Center</h1>
+        <p class="subtitle">Community Clothing Exchange Platform</p>
+        
+        <div class="status" id="firebase-status">
+            ⏳ Checking Firebase configuration...
+        </div>
+        
+        <div class="cards">
+            <a href="index.html" class="card" id="main-app">
+                <div class="card-icon">🏠</div>
+                <div class="card-title">Main Application</div>
+                <div class="card-desc">Launch the complete ReWear platform with all features</div>
+            </a>
+            
+            <a href="test.html" class="card">
+                <div class="card-icon">🧪</div>
+                <div class="card-title">Firebase Test</div>
+                <div class="card-desc">Test and configure your Firebase connection</div>
+            </a>
+            
+            <a href="SETUP.md" class="card">
+                <div class="card-icon">📖</div>
+                <div class="card-title">Setup Guide</div>
+                <div class="card-desc">Complete Firebase setup and configuration instructions</div>
+            </a>
+            
+            <a href="PROJECT_STRUCTURE.md" class="card">
+                <div class="card-icon">🏗️</div>
+                <div class="card-title">Documentation</div>
+                <div class="card-desc">Technical documentation and project structure</div>
+            </a>
+        </div>
+        
+        <div class="features">
+            <h3>✨ Features Included</h3>
+            <ul>
+                <li>🔐 User Authentication</li>
+                <li>📱 Responsive Design</li>
+                <li>👕 Item Management</li>
+                <li>🔍 Smart Search & Filters</li>
+                <li>🔄 Swap System</li>
+                <li>⭐ Points Economy</li>
+                <li>📊 User Dashboard</li>
+                <li>🛡️ Admin Panel</li>
+                <li>🖼️ Image Upload</li>
+                <li>🌿 Sustainability Focus</li>
+                <li>💬 Real-time Updates</li>
+                <li>📱 Mobile Optimized</li>
+            </ul>
+        </div>
+        
+        <div class="footer">
+            <p><strong>ReWear</strong> - Building a sustainable future through community-driven fashion exchange</p>
+            <p>Built with React, Firebase & Tailwind CSS • Made with 💚 for the environment</p>
+        </div>
+    </div>
+    
+    <script>
+        // Check Firebase configuration
+        function checkFirebaseConfig() {
+            const statusEl = document.getElementById('firebase-status');
+            const mainAppEl = document.getElementById('main-app');
+            
+            try {
+                // Try to fetch and parse the index.html to check config
+                fetch('index.html')
+                    .then(response => response.text())
+                    .then(html => {
+                        const hasPlaceholder = html.includes('YOUR_API_KEY_HERE') || 
+                                              html.includes('your-api-key-here');
+                        
+                        if (hasPlaceholder) {
+                            statusEl.innerHTML = '⚠️ Firebase not configured - Setup required';
+                            statusEl.className = 'status warning';
+                            mainAppEl.style.opacity = '0.6';
+                            mainAppEl.onclick = function(e) {
+                                e.preventDefault();
+                                alert('Please configure Firebase first using the Test page or Setup Guide');
+                            };
+                        } else {
+                            statusEl.innerHTML = '✅ Firebase configured - Ready to launch!';
+                            statusEl.className = 'status';
+                        }
+                    })
+                    .catch(() => {
+                        statusEl.innerHTML = '❓ Unable to check configuration';
+                        statusEl.className = 'status warning';
+                    });
+            } catch (error) {
+                statusEl.innerHTML = '❓ Unable to check configuration';
+                statusEl.className = 'status warning';
+            }
+        }
+        
+        // Add some interactive effects
+        document.addEventListener('DOMContentLoaded', function() {
+            checkFirebaseConfig();
+            
+            // Add click effects to cards
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.addEventListener('mousedown', function() {
+                    this.style.transform = 'translateY(-2px) scale(0.98)';
+                });
+                
+                card.addEventListener('mouseup', function() {
+                    this.style.transform = 'translateY(-5px) scale(1)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
