@@ -23,7 +23,7 @@ src/config/firebase.config.js
 *.env.local
 *.env.production
 config.js
-firebase.config.js
+# firebase.config.js
 
 # Runtime data
 pids

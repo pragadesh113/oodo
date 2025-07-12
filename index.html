@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>ReWear - Community Clothing Exchange</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👗</text></svg>">
     
@@ -80,16 +83,42 @@
     <div id="root"></div>
     
     <!-- Firebase Configuration -->
-    <script src="src/config/firebase.config.js"></script>
     <script>
-        // Check if Firebase configuration is loaded
-        if (!window.firebaseConfig) {
-            console.error('Firebase configuration not found. Please copy firebase.config.template.js to firebase.config.js and update with your Firebase project details.');
-            alert('Firebase configuration missing. Please see setup instructions in README.md');
-        } else {
-            // Initialize Firebase
-            firebase.initializeApp(window.firebaseConfig);
-        }
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAQAZ_0iK2hqKVo1wQwXMz0iQ9cfHdtz-A",
+            authDomain: "rewear-8b111.firebaseapp.com",
+            projectId: "rewear-8b111",
+            storageBucket: "rewear-8b111.appspot.com",
+            messagingSenderId: "949098827977",
+            appId: "1:949098827977:web:bd356a32d0b267366e7d18",
+            measurementId: "G-CDKVEP60KH"
+        };
+
+        /* 
+         * IMPORTANT: CORS Configuration for Firebase Storage
+         * 
+         * If you're experiencing CORS errors when uploading to Firebase Storage,
+         * you need to configure your Firebase Storage CORS settings in the Firebase Console:
+         * 
+         * 1. Go to Firebase Console > Storage > Rules
+         * 2. Add the following CORS configuration to allow uploads from your domain:
+         *
+         * [
+         *   {
+         *     "origin": ["https://rewear-8b111.web.app", "http://localhost:5000"],
+         *     "method": ["GET", "POST", "PUT", "DELETE", "HEAD"],
+         *     "maxAgeSeconds": 3600
+         *   }
+         * ]
+         *
+         * 3. Save the configuration
+         *
+         * For more information, see: https://firebase.google.com/docs/storage/web/download-files#cors_configuration
+         */
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
         
         // Firebase services
         const auth = firebase.auth();
@@ -98,6 +127,7 @@
         
         // Global Firebase reference
         window.firebaseServices = { auth, db, storage };
+        window.firebaseConfig = firebaseConfig;
     </script>
     
     <!-- Load Utilities and Services -->
@@ -106,14 +136,14 @@
     <script src="src/data/demo.js"></script>
     
     <!-- Load React Components -->
-    <script type="text/babel" src="src/components/LoginPage.js"></script>
-    <script type="text/babel" src="src/components/RegisterPage.js"></script>
-    <script type="text/babel" src="src/components/DashboardPage.js"></script>
-    <script type="text/babel" src="src/components/ItemListingPage.js"></script>
-    <script type="text/babel" src="src/components/ItemDetailPage.js"></script>
-    <script type="text/babel" src="src/components/AddItemPage.js"></script>
-    <script type="text/babel" src="src/components/AdminPanel.js"></script>
-    <script type="text/babel" src="src/App.js"></script>
+    <script type="text/babel" src="src/components/LoginPage.js?v=1.1"></script>
+    <script type="text/babel" src="src/components/RegisterPage.js?v=1.1"></script>
+    <script type="text/babel" src="src/components/DashboardPage.js?v=1.1"></script>
+    <script type="text/babel" src="src/components/ItemListingPage.js?v=1.1"></script>
+    <script type="text/babel" src="src/components/ItemDetailPage.js?v=1.1"></script>
+    <script type="text/babel" src="src/components/AddItemPage.js?v=1.1"></script>
+    <script type="text/babel" src="src/components/AdminPanel.js?v=1.1"></script>
+    <script type="text/babel" src="src/App.js?v=1.1"></script>
     
     <!-- Render App -->
     <script type="text/babel">

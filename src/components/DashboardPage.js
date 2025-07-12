@@ -5,13 +5,34 @@ const DashboardPage = ({ navigateTo }) => {
     const [userProfile, setUserProfile] = useState(null);
     const [userItems, setUserItems] = useState([]);
     const [userSwaps, setUserSwaps] = useState([]);
+    const [userPurchases, setUserPurchases] = useState([]);
     const [loading, setLoading] = useState(true);
 
+    // Fetch data when component mounts and when user changes
     useEffect(() => {
         if (user) {
             fetchUserData();
         }
     }, [user]);
+    
+    // This effect will run when the component mounts, ensuring fresh data
+    useEffect(() => {
+        const refreshData = () => {
+            if (user) {
+                console.log("Refreshing dashboard data...");
+                fetchUserData();
+            }
+        };
+        
+        // Refresh immediately
+        refreshData();
+        
+        // Set up an interval to refresh data every 30 seconds
+        const intervalId = setInterval(refreshData, 30000);
+        
+        // Clean up interval on unmount
+        return () => clearInterval(intervalId);
+    }, []);
 
     const fetchUserData = async () => {
         try {
@@ -37,17 +58,49 @@ const DashboardPage = ({ navigateTo }) => {
             }));
             setUserItems(items);
 
-            // Fetch user swaps
-            const swapsSnapshot = await window.firebaseServices.db
+            // Fetch user swaps - need to check both requester and owner fields
+            const requesterSwapsSnapshot = await window.firebaseServices.db
                 .collection('swaps')
-                .where('userId', '==', user.uid)
+                .where('requesterId', '==', user.uid)
+                .get();
+                
+            const ownerSwapsSnapshot = await window.firebaseServices.db
+                .collection('swaps')
+                .where('ownerId', '==', user.uid)
                 .get();
 
-            const swaps = swapsSnapshot.docs.map(doc => ({
+            // Combine both sets of swaps
+            const requesterSwaps = requesterSwapsSnapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data(),
+                role: 'requester'
+            }));
+            
+            const ownerSwaps = ownerSwapsSnapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data(),
+                role: 'owner'
+            }));
+            
+            // Combine and remove duplicates (in case a swap appears in both queries)
+            const allSwaps = [...requesterSwaps, ...ownerSwaps];
+            const uniqueSwaps = allSwaps.filter((swap, index, self) => 
+                index === self.findIndex(s => s.id === swap.id)
+            );
+            
+            setUserSwaps(uniqueSwaps);
+
+            // Fetch user purchases
+            const purchasesSnapshot = await window.firebaseServices.db
+                .collection('purchases')
+                .where('buyerId', '==', user.uid)
+                .get();
+
+            const purchases = purchasesSnapshot.docs.map(doc => ({
                 id: doc.id,
                 ...doc.data()
             }));
-            setUserSwaps(swaps);
+            setUserPurchases(purchases);
 
         } catch (error) {
             console.error('Error fetching user data:', error);
@@ -90,6 +143,13 @@ const DashboardPage = ({ navigateTo }) => {
                                             'Recently'
                                         }
                                     </p>
+                                    {userProfile?.isAdmin && (
+                                        <div className="flex items-center space-x-2 mt-2">
+                                            <span className="bg-orange-100 text-orange-800 text-xs font-medium px-2 py-1 rounded-full">
+                                                🛡️ Administrator
+                                            </span>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                             <div className="text-right">
@@ -158,6 +218,16 @@ const DashboardPage = ({ navigateTo }) => {
                                 My Listings
                             </button>
                             <button
+                                onClick={() => setActiveTab('purchases')}
+                                className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                                    activeTab === 'purchases'
+                                        ? 'border-rewear-primary text-rewear-primary'
+                                        : 'border-transparent text-gray-500 hover:text-gray-700'
+                                }`}
+                            >
+                                My Purchases
+                            </button>
+                            <button
                                 onClick={() => setActiveTab('swaps')}
                                 className={`py-4 px-1 border-b-2 font-medium text-sm ${
                                     activeTab === 'swaps'
@@ -201,6 +271,72 @@ const DashboardPage = ({ navigateTo }) => {
                                                 item={item}
                                                 onClick={() => navigateTo('item-detail', item)}
                                             />
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                        
+                        {activeTab === 'purchases' && (
+                            <div>
+                                <div className="flex justify-between items-center mb-6">
+                                    <h2 className="text-xl font-semibold">My Purchases</h2>
+                                    <button
+                                        onClick={() => navigateTo('items')}
+                                        className="bg-rewear-primary text-white px-4 py-2 rounded-lg hover:bg-rewear-secondary transition-colors"
+                                    >
+                                        Browse More Items
+                                    </button>
+                                </div>
+                                
+                                {userPurchases.length === 0 ? (
+                                    <div className="text-center py-8">
+                                        <span className="text-6xl mb-4 block">🛍️</span>
+                                        <h3 className="text-lg font-medium text-gray-900 mb-2">
+                                            No purchases yet
+                                        </h3>
+                                        <p className="text-gray-600">
+                                            Browse items and use your points to make purchases
+                                        </p>
+                                    </div>
+                                ) : (
+                                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                        {userPurchases.map(purchase => (
+                                            <div key={purchase.id} className="bg-white border rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                                                <div className="h-48 bg-gray-200">
+                                                    {purchase.itemImage ? (
+                                                        <img 
+                                                            src={purchase.itemImage} 
+                                                            alt={purchase.itemTitle} 
+                                                            className="w-full h-full object-cover"
+                                                        />
+                                                    ) : (
+                                                        <div className="w-full h-full flex items-center justify-center">
+                                                            <span className="text-4xl">👗</span>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                                <div className="p-4">
+                                                    <h3 className="font-semibold text-lg mb-1">{purchase.itemTitle}</h3>
+                                                    <div className="flex justify-between items-center mb-2">
+                                                        <span className="text-sm text-gray-600">
+                                                            Purchased: {purchase.date?.toDate().toLocaleDateString()}
+                                                        </span>
+                                                        <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">
+                                                            {purchase.status || 'Completed'}
+                                                        </span>
+                                                    </div>
+                                                    <div className="flex justify-between items-center mt-3">
+                                                        <span className="text-rewear-primary font-bold">{purchase.points} pts</span>
+                                                        <button 
+                                                            onClick={() => navigateTo('item-detail', { id: purchase.itemId })}
+                                                            className="text-sm text-rewear-primary hover:text-rewear-secondary"
+                                                        >
+                                                            View Details →
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         ))}
                                     </div>
                                 )}

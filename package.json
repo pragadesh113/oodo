@@ -7,7 +7,12 @@
     "start": "python -m http.server 8000",
     "dev": "live-server --port=8000 --open=/index.html",
     "build": "echo 'No build process needed for CDN-based React app'",
-    "deploy": "firebase deploy"
+    "deploy": "firebase deploy",
+    "config:backup": "node scripts/config-manager.js backup",
+    "config:restore": "node scripts/config-manager.js restore",
+    "config:secure": "node scripts/config-manager.js secure",
+    "pre-commit": "npm run config:secure",
+    "post-checkout": "npm run config:restore"
   },
   "keywords": [
     "clothing",
